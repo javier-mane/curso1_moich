@@ -1,0 +1,56 @@
+scalar Date
+
+type Query {
+  hello(name: String!): String!
+
+  heroes: [Heroe!]!
+  heroe(id: Int!): Heroe!
+
+  powers: [Power!]!
+  power(id: Int!): Power!
+
+}
+
+type Mutation {
+  createHeroe(data: IHeroe!): Heroe!
+  updateHeroe(id: Int, data: IHeroe!): Heroe!
+  deleteHeroe(id: Int): Heroe!
+
+  createPower(data: IPower!): Power!
+  updatePower(id: Int, data: IPower!): Power!
+  deletePower(id: Int): Power!
+}
+
+type Heroe {
+    id: Int
+    name: String
+    img: String
+    active: Boolean
+    createdAt: Date
+    powers: [Power]
+}
+
+input IHeroe {
+  id: Int
+  name: String
+  img: String
+  active: Boolean
+  createdAt: Date
+}
+
+type Power {
+  id: Int
+  name: String
+  heroeId: Int
+  heroe: Heroe
+  active: Boolean
+  createdAt: Date
+}
+
+input IPower {
+  id: Int
+  name: String
+  heroeId: Int
+  active: Boolean
+  createdAt: Date
+}
