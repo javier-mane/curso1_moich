@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose'
 import dbContext from '../context.db'
 
@@ -8,10 +7,6 @@ const modelSchema = new Schema({
   name: {
     type: String,
     required: [true, 'name es requerido']
-  },
-  img: {
-    type: String,
-    required: [true, 'img es requerido']
   },
   active: {
     type: Boolean,
@@ -38,6 +33,6 @@ const modelSchema = new Schema({
   }
 })
 
-const model = dbContext.model('heroes', modelSchema)
+const model = dbContext.model('positions', modelSchema)
 
 export default model

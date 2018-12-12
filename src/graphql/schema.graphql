@@ -4,51 +4,180 @@ type Query {
   hello(name: String!): String!
 
   heroes: [Heroe!]!
-  heroe(id: Int!): Heroe!
+  heroe(id: String!): Heroe!
 
   powers: [Power!]!
-  power(id: Int!): Power!
+  power(id: String!): Power!
+
+  positions: [Position!]!
+  position(id: String!): Position!
+
+  empresas: [Empresa!]!
+  empresa(id: String!): Empresa!
+
+  empleados: [Empleado!]!
+  empleado(id: String!): Empleado!
+
 
 }
 
 type Mutation {
   createHeroe(data: IHeroe!): Heroe!
-  updateHeroe(id: Int, data: IHeroe!): Heroe!
-  deleteHeroe(id: Int): Heroe!
+  updateHeroe(id: String, data: IHeroe!): Heroe!
+  deleteHeroe(id: String): Heroe!
+  trashHeroe(id: String): Heroe!  
+  recoverHeroe(id: String): Heroe!
 
   createPower(data: IPower!): Power!
-  updatePower(id: Int, data: IPower!): Power!
-  deletePower(id: Int): Power!
+  updatePower(id: String, data: IPower!): Power!
+  deletePower(id: String): Power!
+  trashPower(id: String): Power!  
+  recoverPower(id: String): Power!
+
+  createPosition(data: IPosition): Position!
+  updatePosition(id: String, data: IPosition!): Position!
+  deletePosition(id: String): Position!
+  trashPosition(id: String): Position!  
+  recoverPosition(id: String): Position!
+
+  createEmpresa(data: IEmpresa): Empresa!
+  updateEmpresa(id: String, data: IEmpresa!): Empresa!
+  deleteEmpresa(id: String): Empresa!
+  trashEmpresa(id: String): Empresa!  
+  recoverEmpresa(id: String): Empresa!
+
+  createEmpleado(data: IEmpleado): Empleado!
+  updateEmpleado(id: String, data: IEmpleado!): Empleado!
+  deleteEmpleado(id: String): Empleado!
+  trashEmpleado(id: String): Empleado!  
+  recoverEmpleado(id: String): Empleado!
+
 }
 
+
+type Empresa {
+  _id: String
+  name: String
+  active: Boolean
+  address: Address
+  empleados: [Empleado]
+  createdAt: Date
+  createdBy: String
+  updatedAt: String
+  updatedBy: String
+  deletedAt: String
+  deletedBy: String
+}
+
+
+input IEmpresa {
+  name: String
+  active: Boolean
+  address: IAddress
+}
+
+type Address {
+    calle: String
+    numero: String
+    colonia: String
+}
+
+input IAddress {
+    calle: String
+    numero: String
+    colonia: String
+}
+
+type Position {
+  _id: String
+  name: String
+  active: Boolean
+  empleados: [Empleado]
+  createdAt: Date
+  createdBy: String
+  updatedAt: String
+  updatedBy: String
+  deletedAt: String
+  deletedBy: String
+}
+
+input IPosition {
+  name: String
+  createdBy: String
+  active: Boolean
+}
+
+
+type Empleado {
+    _id: String
+    name: String
+    lastName: String
+    birthDate: Date
+    companyId: String
+    company: Empresa
+    positionId: String
+    position: Position
+    img: String
+    active: Boolean
+    createdAt: Date
+    createdBy: String
+    updatedAt: String
+    updatedBy: String
+    deletedAt: String
+    deletedBy: String
+    powers: [Power]
+}
+
+input IEmpleado {
+  name: String
+  lastName: String
+  birthDate: Date
+  companyId: String
+  positionId: String
+  img: String
+  createdBy: String
+  active: Boolean
+}
+
+
 type Heroe {
-    id: Int
+     id: Int
+    _id: String
     name: String
     img: String
     active: Boolean
     createdAt: Date
+    createdBy: String
+    updatedAt: String
+    updatedBy: String
+    deletedAt: String
+    deletedBy: String
     powers: [Power]
 }
 
 input IHeroe {
-  id: Int
   name: String
   img: String
+  createdBy: String
   active: Boolean
-  createdAt: Date
 }
 
 type Power {
   id: Int
+  _id: String
   name: String
-  heroeId: Int
+  heroeId: String
   heroe: Heroe
   active: Boolean
   createdAt: Date
+  createdBy: String
+  updatedAt: String
+  updatedBy: String
+  deletedAt: String
+  deletedBy: String
 }
 
 input IPower {
-  id: Int
   name: String
   heroeId: Int
   active: Boolean

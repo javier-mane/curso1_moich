@@ -1,60 +1,62 @@
-import heroes from '../../models/heros.model'
+// import heroes from '../../models/heros.model'
+import HeroeModel from '../../dbs/mongodb/heroes/models/heroe.model'
 
 export default {
   queries: {
     heroes: (root, args, context, info) => {
-      return heroes
+      return HeroeModel.find()
     },
     heroe: (root, args, context, info) => {
-      const { id } = args
-      return heroes.filter(heroe => heroe.id === id)[0]
+      // const { id } = args
+      // return heroes.filter(heroe => heroe.id === id)[0]
+      return HeroeModel.findById(args.id)
     }
   },
   mutations: {
     createHeroe: (root, args, context, info) => {
-      const heroe = {
-        createdAt: new Date(),
-        ...args.data
-      }
-      console.log(heroe)
-      heroes.push(heroe)
-      return heroe
+
+      const model = new HeroeModel(args.data)
+      model.createdBy = 'Javier'
+
+      return model.save()
     },
     updateHeroe: (root, args, context, info) => {
       const { id, data } = args
-      const heroe = heroes.filter(heroe => heroe.id === id)[0]
-
-      if (!heroe) {
-        throw new Error('No se encontro el heroe')
-      }
-
-      heroes.splice(heroes.indexOf(heroe), 1)
-
-      heroe.name = data.name
-      heroe.img = data.img
-      heroe.active = data.active
-
-      console.log(heroe)
-      heroes.push(heroe)
-      return heroe
+      return HeroeModel.findOneAndUpdate({ _id: id }, {
+        $set: {
+          ...data,
+          updatedAt: Date.now(),
+          updatedBy: 'Javier'
+        }
+      }, { new: true })
     },
     deleteHeroe: (root, args, context, info) => {
       const { id } = args
-      const heroe = heroes.filter(heroe => heroe.id === id)[0]
-
-      if (!heroe) {
-        throw new Error('No se encontro el heroe')
-      }
-
-      heroes.splice(heroes.indexOf(heroe), 1)
-      return heroe
+      return HeroeModel.findOneAndRemove({ _id: id })
+    },
+    trashHeroe: (root, args, context, info) => {
+      const { id } = args
+      return HeroeModel.findOneAndUpdate({ _id: id }, {
+        $set: {
+          deletedAt: Date.now(),
+          deletedBy: 'Javier'
+        }
+      }, { new: true })
+    },
+    recoverHeroe: (root, args, context, info) => {
+      const { id } = args
+      return HeroeModel.findOneAndUpdate({ _id: id }, {
+        $set: {
+          deletedAt: null,
+          deletedBy: null
+        }
+      }, { new: true })
     }
   },
   relations: {
     getById: (root, args, context, info) => {
       const { heroeId } = root
-      const heroe = heroes.filter(heroe => heroe.id === heroeId)[0]
-      return heroe
+      return HeroeModel.findById({ _id: heroeId })
     }
   }
 }
